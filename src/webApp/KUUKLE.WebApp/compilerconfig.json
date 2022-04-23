@@ -1,0 +1,26 @@
+﻿[
+  {
+    "outputFile": "wwwroot/css/site.css",
+    "inputFile": "wwwroot/css/site.scss"
+  },
+  {
+    "outputFile": "wwwroot/css/index.css",
+    "inputFile": "wwwroot/css/index.scss"
+  },
+  {
+    "outputFile": "wwwroot/css/search/index.css",
+    "inputFile": "wwwroot/css/search/index.scss"
+  },
+  {
+    "outputFile": "wwwroot/css/search/search.css",
+    "inputFile": "wwwroot/css/search/search.scss"
+  },
+  {
+    "outputFile": "wwwroot/css/site/site.css",
+    "inputFile": "wwwroot/css/site/site.scss"
+  },
+  {
+    "outputFile": "wwwroot/css/index/index.css",
+    "inputFile": "wwwroot/css/index/index.scss"
+  }
+]

@@ -1,0 +1,32 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>KUUKLE</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link href="~/css/fontawesome/all.min.css" rel="stylesheet" />
+    <link href="~/css/site/site.min.css" rel="stylesheet" />
+    @RenderSection("Stylesheets", required: false)
+</head>
+<body>
+    <header>
+    </header>
+    <div class="content-container">
+        <main role="main">
+            @RenderBody()
+        </main>
+    </div>
+    <footer class="border-top footer text-muted">
+        <div class="container-fluid">
+            KUUKLE &copy; <span id="copyrightDate"></span> - Kamil Kapliński, Mateusz Surynowicz
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById('copyrightDate').innerHTML = new Date().getFullYear();
+    </script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

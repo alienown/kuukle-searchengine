@@ -1,0 +1,4 @@
+{
+	"bbcPath": "",
+	"dbConnectionString": "Driver={SQL Server};Server=(local);Database=NLPSearchEngine;Trusted_Connection=yes;"
+}

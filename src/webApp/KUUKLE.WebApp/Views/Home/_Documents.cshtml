@@ -1,0 +1,24 @@
+﻿@using NLP.Models.Models.Search
+@model SearchResultViewModel
+
+@Html.HiddenFor(x => x.Total)
+@Html.HiddenFor(x => x.SearchTime)
+@Html.HiddenFor(x => x.SuggestedQuery)
+
+@foreach (var document in Model.Documents)
+{
+    <div class="document-container">
+        <h3 class="document-header"><a asp-action="Details" asp-controller="Home" asp-route-id="@document.Id">@document.Title</a></h3>
+        <div class="font-weight-bold">@document.Source, @document.Category</div>
+        <div class="document-body-preview">
+            @document.Body ...
+        </div>
+        @if (document.Score.HasValue)
+        {
+            <div class="document-scores">
+                <span class="badge badge-info mr-1">Score: @document.Score</span><span class="badge badge-info mr-1">Title: @document.TitleScore</span><span class="badge badge-info mr-1">Body: @document.BodyScore</span><span class="badge badge-info">Semantic: @document.SemanticScore</span>
+            </div>
+        }
+    </div>
+}
+

@@ -1,0 +1,19 @@
+﻿#search-bar {
+  margin-bottom: 30px; }
+  #search-bar #searchInput {
+    border-radius: 20px 0 0 20px; }
+  #search-bar .search-input-icon {
+    border-radius: 0 20px 20px 0 !important; }
+  #search-bar .search-input-container {
+    max-width: 700px; }
+
+#summaryContainer {
+  margin-bottom: 30px; }
+
+.document-container {
+  margin-bottom: 30px; }
+  .document-container .document-header {
+    font-size: 22px; }
+  .document-container .document-body-preview {
+    max-width: 800px;
+    margin-bottom: 5px; }

@@ -1,0 +1,26 @@
+﻿@section Stylesheets {
+    <link href="~/css/index/index.min.css" rel="stylesheet" />
+}
+
+<div class="search-container">
+    <div class="row">
+        <div class="col">
+            <div class="text-center mb-4">
+                <img src="~/assets/kuukle.png" />
+            </div>
+            <form asp-action="Search" asp-controller="Home" method="GET">
+                <div class="text-center mb-3">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text search-input-icon"><i class="fa fa-search"></i></span>
+                        </div>
+                        <input id="searchInput" name="query" class="form-control" />
+                    </div>
+                </div>
+                <div class="text-center">
+                    <button id="searchButton" type="submit" class="btn btn-light">Szukaj</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

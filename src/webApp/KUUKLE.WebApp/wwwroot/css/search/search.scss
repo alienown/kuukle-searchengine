@@ -1,0 +1,32 @@
+﻿#search-bar {
+    margin-bottom: 30px;
+
+    #searchInput {
+        border-radius: 20px 0 0 20px;
+    }
+
+    .search-input-icon {
+        border-radius: 0 20px 20px 0 !important;
+    }
+
+    .search-input-container {
+        max-width: 700px;
+    }
+}
+
+#summaryContainer {
+    margin-bottom: 30px;
+}
+
+.document-container {
+    margin-bottom: 30px;
+
+    .document-header {
+        font-size: 22px;
+    }
+
+    .document-body-preview {
+        max-width: 800px;
+        margin-bottom: 5px;
+    }
+}

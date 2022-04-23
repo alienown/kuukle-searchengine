@@ -1,0 +1,19 @@
+﻿@using NLP.Services.Services.DocumentSearch 
+@model Document
+
+<div class="row mb-5">
+    <div class="col-auto">
+        <a asp-action="Index" asp-controller="Home"><img src="~/assets/kuukle.png" height="35" title="Strona główna" /></a>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <h3>@Model.Title</h3>
+        <h5>
+            @Model.Source, @Model.Category
+        </h5>
+        <div class="text-justify mt-3" style="white-space: pre-line;">
+            @Model.Body
+        </div>
+    </div>
+</div>

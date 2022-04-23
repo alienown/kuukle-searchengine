@@ -1,0 +1,107 @@
+﻿@using NLP.Models.Models.Search
+@model SearchViewModel
+
+@section Stylesheets {
+    <link href="~/lib/simplePagination/css/simplePagination.css" rel="stylesheet" />
+    <link href="~/css/search/search.min.css" rel="stylesheet" />
+}
+
+<div id="search-bar">
+    <div class="row mb-4">
+        <div class="col-auto">
+            <a asp-action="Index" asp-controller="Home"><img src="~/assets/kuukle.png" height="35" title="Strona główna" /></a>
+        </div>
+        <div class="col">
+            <form asp-action="Search" asp-controller="Home" method="get">
+                <div class="search-input-container">
+                    <div class="input-group">
+                        <input id="searchInput" name="query" class="form-control" value="@Model.Query" />
+                        <div class="input-group-prepend">
+                            <button type="submit" class="input-group-text search-input-icon"><i class="fa fa-search"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div id="resultsContainer" style="display: none;">
+    <div id="summaryContainer" class="row">
+        <div class="col">
+            <div id="statsContainer" class="mb-2"></div>
+            <div id="suggestedQueryContainer" class="row" style="display: none;">
+                <div class="col">
+                    <div class="mb-1">Pokazuję wyniki dla <a id="suggestedQueryLink" href="#"></a></div>
+                    <div>Szukaj dla <a id="forceQueryLink" href="#">@Model.Query</a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div id="documentsContainer"></div>
+            <div id="paginator"></div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/lib/simplePagination/dist/jquery.simplePagination.js"></script>
+
+    <script>
+        function getDocuments(query, pageNumber, forceQuery) {
+            var url = '@Url.Action("GetDocuments", "Home")';
+            $.get(url, { query: query, pageNumber: pageNumber, forceQuery: forceQuery }, function (content) {
+                $('#documentsContainer').html(content);
+
+                var total = parseInt($('#Total').val());
+                var elapsedTime = $('#SearchTime').val();
+                var summary = 'Wyników: ' + total + ', ' + '(' + elapsedTime + ') sekund';
+                $('#statsContainer').html(summary);
+
+                var suggestedQuery = $('#SuggestedQuery').val();
+                if (suggestedQuery) {
+                    var newSearchUrl = '@Url.Action("Search", "Home", new { query = "__q__" })'.replace('__q__', suggestedQuery);
+                    var newForceSearchUrl = '@Html.Raw(Url.Action("Search", "Home", new { query = Model.Query, forceQuery = true }))';
+
+                    $('#suggestedQueryLink').attr('href', newSearchUrl);
+                    $('#suggestedQueryLink').html(suggestedQuery);
+                    $('#forceQueryLink').attr('href', newForceSearchUrl);
+                    $('#forceQueryLink').html('@Model.Query');
+                    $('#suggestedQueryContainer').show();
+                }
+
+                $('#paginator').pagination('updateItems', total);
+                $('#totalCountDisplay').html(total);
+                if (total > 10) {
+                    $('#paginator').show();
+                } else {
+                    $('#paginator').hide();
+                }
+
+                $('#resultsContainer').show();
+            });
+        }
+
+        function createPaginator(query, pageNumber) {
+            $('#paginator').pagination({
+                items: 0,
+                itemsOnPage: 30,
+                currentPage: pageNumber,
+                cssStyle: 'light-theme',
+                prevText: '<',
+                nextText: '>',
+                hrefTextPrefix: '?pageNumber=',
+                hrefTextSuffix: '&query=' + query,
+            });
+        }
+
+        $(document).ready(function () {
+            var query = '@Model.Query';
+            var pageNumber = parseInt('@Model.PageNumber');
+            var forceQuery = '@Model.ForceQuery' === 'True';
+            createPaginator(query, pageNumber);
+            getDocuments(query, pageNumber, forceQuery);
+        });
+    </script>
+}
