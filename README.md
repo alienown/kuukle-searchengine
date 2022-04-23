@@ -15,7 +15,7 @@ Displaying search results for "mencester unted" query. In similar fashion to Goo
 
 ![image](https://user-images.githubusercontent.com/47573956/164914933-7232bea4-7725-48ef-aeea-4c6ac15d7b76.png)
 
-### Used technologies:
+## Used technologies:
 - ASP.NET Core MVC - https://docs.microsoft.com/en-us/aspnet/core/mvc/overview?view=aspnetcore-3.1 - used to build web application that serves front-end to end user
 - JavaScript, jQuery - https://developer.mozilla.org/en-US/docs/Web/JavaScript, https://jquery.com/ - used to build front-end logic between user and components rendered on website 
 - RestSharp - https://restsharp.dev/ - .NET library for communication between ASP.NET Core MVC application and documents ranking API
@@ -29,7 +29,17 @@ Displaying search results for "mencester unted" query. In similar fashion to Goo
 - Pandas - https://pandas.pydata.org/ - powerful data analysis and manipulation tool, built on top of the Python programming language
 - SymSpellPy - https://github.com/mammothb/symspellpy - Python port of https://github.com/wolfgarbe/SymSpell, used for spelling correction
 
-### Configuration & Installation:
+## Architecture
+
+- Model extractor: extracts data from 20 Newsgroups and BBC News datasets, inserts documents to SQL Server database, and creates model that consists of text vectors  used by ranking API to calculate similarity between query and documents
+- Data layer: it is a SQL Server database which stores document information like title, body, and category 
+- Ranking API: Python Flask REST API that returns the most similar documents to query in request
+- Service layer: a bridge between presentation layer and API & database, defines POCO data transfer objects 
+- Presentation layer: an ASP .NET Core MVC web applciation that serves front-end to end-user
+
+![image](https://user-images.githubusercontent.com/47573956/164945924-0021252e-bbf8-41c0-bc0a-474bc3112312.png)
+
+## Usage:
 1. Run `src/webApp/KUUKLE.Data/dbscript.sql` in SQL Server DBMS. This creates documents database
 2. Download BBC News dataset from http://mlg.ucd.ie/datasets/bbc.html. Copy and pase downloaded directory to `src/docsApi/extractor`. You don't need to download 20 Newsgroups dataset manually beacuse it is fetched from remote endpoint automatically by extractor
 3. Edit `src/docsApi/extractor/config.json`. In field "dbConnectionString" enter connection string of the database you've created in 1. This is where extractor will save prepared documents content
@@ -50,4 +60,20 @@ Displaying search results for "mencester unted" query. In similar fashion to Goo
 ```
 10. In `src/webApp/KUUKLE.WebApp` run `dotnet run`. Web application should build and start
 
-### Document ranking algorithm implementation details:
+## Document ranking algorithm implementation details:
+The techniques used to implement ranking algorithm are based on text vectorization. From two datasets each document is represented as vector of numbers. Using the same techniques to transform query to vector, it is easy to calculate similarity measures between documents and query and pick the most relevant results.
+
+### Preprocessing
+Before proceeding to text vectorization, each document has been prepared in special manner. Each document has been cleaned out off punctuations and special signs like "@", "!", etc. The text was also lowercased. Then documents were lemmatized. Words that don't represent any semantic value, but are used only for grammatic correctness were also removed. The example of these words are: "at", "a", "the", "is", "are", etc. This set of words is called stopwords. Prepared documents were saved in pandas dataframe. The example of prepared document is presented on image below.
+
+![image](https://user-images.githubusercontent.com/47573956/164947560-f1250616-af70-461b-b766-938b5570e6b4.png)
+
+### Creating documents vector representation
+
+#### TF-IDF
+
+#### Latent semantic analysis
+
+### Query autocorrection
+
+### Calculating similarity between query and documents
