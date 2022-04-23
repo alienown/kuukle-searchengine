@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using NLP.Models.Models.DocumentDetails;
-using NLP.Models.Models.Search;
+using KUUKLE.Models.Models.DocumentDetails;
+using KUUKLE.Models.Models.Search;
 using System.Threading.Tasks;
 
 namespace NLPSearchEngine.Controllers

@@ -1,4 +1,4 @@
-﻿namespace NLP.Models.Models.Search
+﻿namespace KUUKLE.Models.Models.Search
 {
     public class SearchViewModel
     {

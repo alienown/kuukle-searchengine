@@ -1,4 +1,4 @@
-﻿namespace NLP.Data.Domain
+﻿namespace KUUKLE.Data.Domain
 {
     public class DocumentCategory
     {

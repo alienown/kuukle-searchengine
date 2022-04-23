@@ -1,4 +1,4 @@
-﻿namespace NLP.Services.Services.DocumentSearch
+﻿namespace KUUKLE.Services.Services.DocumentSearch
 {
     public class Document
     {

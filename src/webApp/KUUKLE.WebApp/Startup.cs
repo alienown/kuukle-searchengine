@@ -4,10 +4,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using NLP.Data.Data;
-using NLP.Models.Models.DocumentDetails;
-using NLP.Models.Models.Search;
-using NLP.Services.Services.DocumentSearch;
+using KUUKLE.Data.Data;
+using KUUKLE.Models.Models.DocumentDetails;
+using KUUKLE.Models.Models.Search;
+using KUUKLE.Services.Services.DocumentSearch;
 
 namespace NLPSearchEngine
 {

@@ -1,7 +1,7 @@
-﻿using NLP.Services.Services.DocumentSearch;
+﻿using KUUKLE.Services.Services.DocumentSearch;
 using System.Threading.Tasks;
 
-namespace NLP.Models.Models.Search
+namespace KUUKLE.Models.Models.Search
 {
     public interface ISearchModel
     {

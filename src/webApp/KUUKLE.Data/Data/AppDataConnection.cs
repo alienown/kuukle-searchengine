@@ -1,9 +1,9 @@
 ﻿using LinqToDB;
 using LinqToDB.Configuration;
 using LinqToDB.Data;
-using NLP.Data.Domain;
+using KUUKLE.Data.Domain;
 
-namespace NLP.Data.Data
+namespace KUUKLE.Data.Data
 {
     public class AppDataConnection : DataConnection
     {

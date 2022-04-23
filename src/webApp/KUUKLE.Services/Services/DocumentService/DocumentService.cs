@@ -1,12 +1,12 @@
 ﻿using LinqToDB;
 using Microsoft.Extensions.Configuration;
-using NLP.Data.Data;
+using KUUKLE.Data.Data;
 using RestSharp;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace NLP.Services.Services.DocumentSearch
+namespace KUUKLE.Services.Services.DocumentSearch
 {
     public class DocumentService : IDocumentService
     {
