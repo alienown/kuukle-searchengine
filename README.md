@@ -69,11 +69,53 @@ Before proceeding to text vectorization, each document has been prepared in spec
 ![image](https://user-images.githubusercontent.com/47573956/164947560-f1250616-af70-461b-b766-938b5570e6b4.png)
 
 ### Creating documents vector representation
+Each document is represented by 3 vectors: title vector, body vector, and semantic vector. For similarity comparison between document and query, the algorithm uses TF-IDF for literal comparison and Latent semantic analysis (LSA - https://en.wikipedia.org/wiki/Latent_semantic_analysis) for semantic comparison.
 
 #### TF-IDF
+Title and body vectors are TF-IDF vectors created using columns "Cleaned title", "Cleaned title lemmatized", "Cleaned body", and "Cleaned body lemmatized" from prepared documents dataframe mentioned in [Preprocessing](#preprocessing) stage.
+TF-IDF vectors contain stopwords. Oftentimes words like "where", "I'm" are present in document titles so they could be used for achieving better result relevance.
+
+After computing TF-IDF, the dictionary contains 151442 unique words.
+
+![image](https://user-images.githubusercontent.com/47573956/164983598-d583aad7-11e7-4ea4-9547-6e7c847a029e.png)
+
+That means that each TF-IDF vector is 151442 long.
 
 #### Latent semantic analysis
+LSA technique allows for identifying interesting patterns between words like synonymy. Using LSA it is possible to compare documents based on their semantic similarity. This is a good addition to TF-IDF literal comparison which can boost query result relevance to end-user. In this project LSA is implemented using
+Singular Value Decomposition (SVD - https://en.wikipedia.org/wiki/Singular_value_decomposition), to be more specific - Truncated SVD. Truncated SVD allows for dimensionality reduction. When reducing vector dimensionality, it is possible to uncover interesting patterns between words.
+
+To create semantic vectors cleaned lemmatized title and cleaned lemmatized body were used, getting rid of inflectional varieties and stop words, since such phrases usually have no semantic value. Truncated SVD was applied to TF-IDF vectors created from title and body contents, reducing TF-IDF vectors dimensionality to 25. Although no evaluation step was carried on in this project to confirm that this number performs best, the number 25 was chosen because there are 25 different categories - each with it's own meaning.
+
+It is worth to notice that by using SVD not only document vectors are created but also vectors for individual words. That means that it is also possible to check how much a given word is correlated with 25 categories by looking at it's vector.
+
+To show LSA effects, for each category, documents belonging to it were averaged out and visualised on 2D plane using UMAP algorithm (https://umap-learn.readthedocs.io/en/latest/). Categories like "rec.sport.baseball", "sport" or "rec.sport.hockey" are about sports and are close to each other. It is surprising (or maybe not really?) that religous categories ("talk.religion.misc" or "c.religion.christian") are close to politics topics.
+
+![image](https://user-images.githubusercontent.com/47573956/164984395-2fbed0a7-3dc1-4147-8281-2e04cee50d30.png)
 
 ### Query autocorrection
+The algorithm can do simple query correction if the word given by the user doesn't exist in TF-IDF words dictionary created in [TF-IDF](#tf-idf). Autocorrection is based on SymSpellPy library that uses Damerau–Levenshtein distance (https://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance).
+
+For example, for query "manheszter junaited" the algorithm suggests "manchester united" query instead:
+
+![image](https://user-images.githubusercontent.com/47573956/164985887-c667009c-24b9-4312-a610-8c4837fbdebc.png)
 
 ### Calculating similarity between query and documents
+
+The query that is passed to the API with request is prepared in the same manner as documents. Query is cleaned and extended using it's lemmatized form. For example, for query `I was trying to catch a bus!!!` the resulting query will be `i was trying to catch a bus try`.
+
+The similarity between query and documents is an average of three values. Semantic similarity between query and vector, cosine similarity between query TF-IDF vector and document title TF-IDF vector, and cosine similarity between query TF-IDF vector and document body TF-IDF vector. Body TF-IDF similarity is weighted using semantic similarity. In case of low semantic similarity, the authors believe that the content of document should have less impact on final result. Given that, the similarity is computed using given formula that combines literal and semantic similarity in final score:
+
+![image](https://user-images.githubusercontent.com/47573956/164987053-85d596e2-62f9-4d76-ac73-753a4a02c7e0.png)
+
+The query semantic vector is obtained by averaging semantic vectors of individual words in query. The semantic similarity is computed using given formula:
+
+![image](https://user-images.githubusercontent.com/47573956/164987065-bb34fc38-1e10-438d-bfcc-c986f101c233.png)
+
+Including cosine similarity between category semantic vector and query semantic vector seemed to boost result relevance. For example, before including this variable, when querying for "manchester united", the result set contained some politics documents about city Manchester. Including category semantic similarity reduced this problem.
+
+After computing similarities, documents are sorted in descending order based on final score. Top *n* documents are returned to end-user where *n* is a parameter passed in a request to the API.
+
+## Future work
+
+Although it was not a scope of this project it is essential to notice that implemented algorithm requires to carry out an evaluation process that checks at which parameters the algorithm performs best. Also different algorithms for text vectorization could be tested, like Word2vec (https://en.wikipedia.org/wiki/Word2vec) or GloVe (https://nlp.stanford.edu/projects/glove/)
